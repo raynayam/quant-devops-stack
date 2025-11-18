@@ -1,0 +1,15 @@
+cat <<'EOF' > ~/trading-lab/prometheus.yml
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'trading_bot'
+    static_configs:
+      - targets: ['10.8.0.1:8000']  # Your VPN/local IP where bot metrics are exposed
+    params:
+      tokens: ['arafatj']
+        labels:
+          instance: 'trading_bot'
+          service: 'trading_bot'
+EOF

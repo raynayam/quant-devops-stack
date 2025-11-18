@@ -1,0 +1,91 @@
+version: "3.9"
+
+services:
+  timescaledb:
+    image: timescale/timescaledb-ha:pg16
+    container_name: timescaledb
+    environment:
+      - POSTGRES_PASSWORD=arafatcap
+      - POSTGRES_USER=arafatdb
+      - POSTGRES_DB=arafatdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/timescale:/var/lib/postgresql/data
+    restart: always
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ./data/minio:/data
+    restart: always
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.14.1
+    container_name: mlflow
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data/mlruns:/mlflow
+    restart: always
+    command: mlflow server --host 0.0.0.0 --backend-store-uri sqlite:///mlflow.db --default-artifact-root /mlflow
+
+  jupyter:
+    image: jupyter/base-notebook:latest
+    container_name: jupyter
+    environment:
+      - JUPYTER_TOKEN=tradinglab
+    ports:
+      - "8888:8888"
+    volumes:
+      - ../scripts:/home/jovyan/scripts
+      - ../notebooks:/home/jovyan/notebooks
+    restart: always
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ../config/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    restart: always
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana123
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+    restart: always
+
+  loki:
+    image: grafana/loki:2.9.0
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/config/config.yml
+    volumes:
+      - ../config/loki-config.yml:/etc/loki/config/config.yml
+    restart: always

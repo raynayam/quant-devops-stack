@@ -1,0 +1,30 @@
+# Secrets
+.env
+*.ovpn
+*.key
+*.crt
+*.pem
+*.p12
+
+# Docker data (this caused the corruption)
+**/data/
+**/plugins/
+compose/data/
+grafana/data/
+minio/data/
+mlflow/data/
+
+# Python
+**/__pycache__/
+**/.ipynb_checkpoints/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db

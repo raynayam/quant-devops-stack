@@ -1,0 +1,21 @@
+requests==2.31.0
+websocket-client==1.6.2
+python-dotenv==1.0.0
+pandas==2.0.3
+numpy==1.24.3
+python-json-logger==2.0.7
+schedule==1.2.0
+pytest==7.4.0
+alpaca-trade-api==3.2.0
+# New dependencies for infrastructure integration
+alpaca-py>=0.20.0
+psycopg2-binary>=2.9.0
+prometheus-client>=0.19.0
+mlflow>=2.8.0
+boto3>=1.28.0
+ccxt>=4.0.0
+# Solana memecoin sniper dependencies
+solana>=0.30.0
+solders>=0.18.0
+tweepy>=4.14.0
+# Note: TA-Lib removed - not used in code and requires C library installation
