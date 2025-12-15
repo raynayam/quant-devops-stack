@@ -1,6 +1,7 @@
 Production-ready containerized stack for backtesting and live trading quantitative strategies.
 
 ## Architecture
+```text
 Remote (You) --> [VPN:10.8.0.1] --> Internet --> [Firewall:Port 1194] --> Docker Host:192.168.1.1
                                                                                         |
                                                                         .---------------'--------------.
